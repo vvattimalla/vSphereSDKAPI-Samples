@@ -70,19 +70,21 @@ public class searchVMXFiles {
 			MalformedURLException {
 
 		searchVMXFiles search = new searchVMXFiles();
-		//Modify the VCIP and credentials
+		//It gives the VC Connection Object.Replace the VCIP,Username and Password.
 		ServiceInstance vcObject = search.Initialisation(
 				"https://192.168.0.100/sdk", "VCUsername",
-				"VCPassword");
+				"VCPasssword");
 		System.out.println("VCObject" + vcObject);
+		//traverse to Root Folder 
 		Folder rootFolder = vcObject.getRootFolder();
-		// Replace the Datacenter Name
+		// Move to the data center by replacing the MYDC
 		Datacenter dc = (Datacenter) new InventoryNavigator(rootFolder)
 				.searchManagedEntity("Datacenter", "MYDC");
 		Folder vmFolder = (Folder) new InventoryNavigator(rootFolder).searchManagedEntity("Folder","vm");
-		// Replace the Resourcepool Name
+		// Retrieve the resource pool object
 		ResourcePool resourcepool = (ResourcePool) new InventoryNavigator(rootFolder)
 		.searchManagedEntity("ResourcePool", "RP");
+		//Retrieve all the hosts in the Inventory
 		ManagedEntity[] hostmanagedEntities = new InventoryNavigator(rootFolder)
 				.searchManagedEntities("HostSystem");
 
@@ -90,6 +92,8 @@ public class searchVMXFiles {
 			HostSystem hostsys = (HostSystem) hostmanagedEntity;
 			String ESXhostname = hostsys.getName();
 			System.out.println("ESXhostname" + ESXhostname);
+			
+			//Retrieve all the data stores on the host
 			Datastore[] HDS = hostsys.getDatastores();
 
 			List<String> filePaths = new ArrayList<String>();
@@ -107,7 +111,7 @@ public class searchVMXFiles {
 				hostDatastoreBrowserSearchSpec.setSearchCaseInsensitive(false);
 				hostDatastoreBrowserSearchSpec
 						.setMatchPattern(new String[] { "*" });
-
+				//Searching through all the VM folder resides in the data store
 				Task task = ds.getBrowser().searchDatastoreSubFolders_Task(
 						"[" + ds.getName() + "]",
 						hostDatastoreBrowserSearchSpec);
@@ -162,6 +166,8 @@ public class searchVMXFiles {
 			}
 
 		}
+		//close the connection
+		vcObject.getServerConnection().logout();
 
 	}
 
