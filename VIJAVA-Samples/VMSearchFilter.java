@@ -1,6 +1,5 @@
-
 /**
- * Utility program to search vms based on VM properties like Number of CPU and Guest OS Name.
+ * Utility program to Search VMS in the Inventory based on VM properties like Number of CPU and Guest OS Name.
  * 
  *
  * Copyright (c) 2016
@@ -44,11 +43,11 @@ import com.vmware.vim25.mo.ManagedEntity;
 import com.vmware.vim25.mo.ServiceInstance;
 import com.vmware.vim25.mo.VirtualMachine;
 
-public class VMFilter {
+public class VMSearchFilter {
 
-	static String vcURL = "https://10.160.3.128/sdk";
-	static String vcUsername = "Administrator@vsphere.local";
-	static String vcPassword = "Admin!23";
+	static String vcURL = "https://10.199.100.100/sdk";
+	static String vcUsername = "VCUsername";
+	static String vcPassword = "VCPassword";
 	static String dataCenter = "vcqaDC";
 
 	public ServiceInstance Initialisation(String url, String username,
@@ -84,7 +83,7 @@ public class VMFilter {
 	public static void main(String[] args) throws RemoteException,
 			MalformedURLException {
 
-		VMFilter vmFilter = new VMFilter();
+		VMSearchFilter vmFilter = new VMSearchFilter();
 		// It gives the VC Connection Object.Replace the VCIP,Username and
 		// Password.
 		ServiceInstance vcObject = vmFilter.Initialisation(vcURL, vcUsername,
